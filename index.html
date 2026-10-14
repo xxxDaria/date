@@ -116,7 +116,7 @@ button{font:inherit;cursor:pointer}
     <h2>когда</h2>
     <h1>31 октября</h1>
     <p>суббота. будь готов к <b class="t">17:30</b>, в это время мы выезжаем</p>
-    <button class="next">Далее</button>
+    <button class="next">далее</button>
   </section>
 
   <section class="card" data-step>
@@ -159,7 +159,7 @@ env.addEventListener('click',function(){
   setTimeout(function(){intro.style.display='none';stage.classList.add('on')},2700);
 });
 steps.forEach(function(s,i){var b=s.querySelector('.next');if(b&&i<steps.length-1)b.addEventListener('click',function(){show(i+1)})});
-document.getElementById('yesBtn').addEventListener('click',function(){document.getElementById('yes').textContent='отлично! до встречи';this.style.display='none'});
+document.getElementById('yesBtn').addEventListener('click',function(){document.getElementById('yes').textContent='отлично! до встречи ❤ ';this.style.display='none'});
 </script>
 </body>
 </html>
