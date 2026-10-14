@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Тебе приглашение</title>
+<!-- Основной шрифт Soyuz Grotesk подключен в блоке стилей (@font-face). Oswald и Nunito ниже запасные, они работают, пока файл шрифта не загружен -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;800&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Soyuz Grotesk';src:url('SoyuzGrotesk.woff2') format('woff2'),url('SoyuzGrotesk.otf') format('opentype'),url('SoyuzGrotesk.ttf') format('truetype');font-weight:100 900;font-display:swap}
+:root{--font-head:'Soyuz Grotesk','Oswald','Impact',sans-serif;--font-body:'Soyuz Grotesk','Nunito',system-ui,sans-serif;--bg:#1a0a10;--velvet:#7a1426;--gold:#f0b94e;--cream:#f8ecd4;--ink:#2a1218;--pink:#f4a9b8;color-scheme:dark;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:radial-gradient(ellipse at 50% 20%,#5a1223 0%,var(--bg) 65%);color:var(--cream);font-family:var(--font-body);overflow:hidden;display:flex;align-items:center;justify-content:center}
+body:before,body:after{content:"";position:fixed;left:0;right:0;height:22px;background:repeating-linear-gradient(90deg,transparent 0 12px,rgba(248,236,212,.18) 12px 24px);border-block:2px solid rgba(248,236,212,.12)}
+body:before{top:0}body:after{bottom:0}
+h1,h2,.big{font-family:var(--font-head);font-weight:600;letter-spacing:.02em;margin:0}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+/* envelope */
+#intro{display:flex;flex-direction:column;align-items:center;gap:36px;transition:opacity .6s,transform .6s}
+#intro.gone{opacity:0;transform:scale(.9);pointer-events:none}
+.env{position:relative;width:min(84vw,340px);aspect-ratio:3/2;perspective:900px;border:0;background:none;padding:0}
+.env>*{position:absolute}
+.back{inset:0;background:#8f1d2f;border-radius:8px}
+.letter{z-index:1;left:7%;right:7%;top:8%;bottom:8%;background:var(--cream);border-radius:4px;color:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:20px;transition:transform .9s .55s cubic-bezier(.3,.8,.3,1)}
+.front{z-index:2;inset:0;background:#a8283b;clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%);border-radius:8px}
+.flap{left:0;right:0;top:0;height:55%;background:#c03348;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .6s,z-index 0s .3s;z-index:3}
+.seal{left:50%;top:41%;width:44px;height:44px;margin:0 0 0 -22px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;z-index:4;transition:opacity .3s;box-shadow:0 2px 0 #b8842a}
+.env.open .flap{transform:rotateX(180deg);z-index:0}
+.env.open .seal{opacity:0}
+.env.open .letter{transform:translateY(-62%)}
+.hint{font-family:var(--font-head);font-size:20px;color:var(--gold);letter-spacing:.06em}
+
+/* stage */
+#stage{display:none;width:min(92vw,400px);flex-direction:column;align-items:center;gap:22px}
+#stage.on{display:flex}
+.card{position:relative;width:100%;min-height:360px;background:var(--cream);color:var(--ink);border-radius:14px;padding:38px 26px 28px;text-align:center;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;box-shadow:0 0 0 3px var(--gold),0 18px 40px rgba(0,0,0,.5)}
+.card.on{display:flex;animation:in .45s ease-out}
+@keyframes in{from{opacity:0;transform:translateX(40px)}}
+.card h1{font-size:40px;line-height:1.08;color:var(--velvet)}
+.card h2{font-size:22px;color:var(--velvet)}
+.card p{margin:0;font-size:18px;line-height:1.45;max-width:30ch}
+.big{font-size:54px;line-height:1;color:var(--velvet)}
+.next{background:var(--velvet);color:var(--cream);border:0;border-radius:999px;padding:13px 34px;font-weight:800;font-size:18px;margin-top:8px;box-shadow:0 4px 0 #4a0b17;transition:transform .1s}
+.next:active{transform:translateY(3px);box-shadow:0 1px 0 #4a0b17}
+.dots{display:flex;gap:9px}
+.dots i{width:10px;height:10px;border-radius:50%;background:rgba(248,236,212,.3)}
+.dots i.on{background:var(--gold)}
+
+/* ticket */
+.ticket{text-align:left;align-items:stretch;padding:30px 24px 24px;-webkit-mask:radial-gradient(circle 12px at 0 62%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 12px at 100% 62%,#0000 98%,#000) right/51% 100% no-repeat;mask:radial-gradient(circle 12px at 0 62%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 12px at 100% 62%,#0000 98%,#000) right/51% 100% no-repeat;box-shadow:none}
+.ticket h2{font-size:30px;text-align:center}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:2px dashed rgba(122,20,38,.35);padding:9px 0}
+.row span{font-size:14px;opacity:.7}
+.row b{font-family:var(--font-head);font-size:21px;font-weight:600;color:var(--velvet);text-align:right}
+.bars{height:34px;margin-top:6px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 5px,var(--ink) 5px 6px,transparent 6px 11px,var(--ink) 11px 14px,transparent 14px 16px)}
+.ticket .next{align-self:center}
+#yes{text-align:center;font-weight:800;color:var(--velvet);min-height:24px;margin-top:4px}
+
+/* cat stickers */
+.stk{position:absolute;width:92px;height:92px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3))}
+.card.on .stk{animation:pop .5s .25s backwards cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:scale(0) rotate(-30deg);opacity:0}}
+.a{top:-34px;right:-14px;rotate:14deg}.b{bottom:-30px;left:-16px;rotate:-12deg}.c{top:-38px;left:-12px;rotate:-10deg}.d{bottom:-32px;right:-14px;rotate:10deg}
+.stk.s{width:70px;height:70px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-height:640px){.card{min-height:300px}.big{font-size:44px}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="cat" viewBox="0 0 100 100">
+<g stroke="#fff" stroke-width="11" stroke-linejoin="round" fill="#fff">
+<path d="M14 44 L18 8 L46 24Z M86 44 L82 8 L54 24Z"/><ellipse cx="50" cy="58" rx="38" ry="33"/></g>
+<path d="M14 44 L18 8 L46 24Z M86 44 L82 8 L54 24Z" fill="var(--c)"/>
+<path d="M22 32 L23 17 L36 25Z M78 32 L77 17 L64 25Z" fill="#f4a9b8"/>
+<ellipse cx="50" cy="58" rx="38" ry="33" fill="var(--c)"/>
+<circle cx="26" cy="64" r="7" fill="#f4a9b8" opacity=".55"/><circle cx="74" cy="64" r="7" fill="#f4a9b8" opacity=".55"/>
+<ellipse cx="35" cy="54" rx="4.5" ry="6" fill="#2a1218"/><ellipse cx="65" cy="54" rx="4.5" ry="6" fill="#2a1218"/>
+<circle cx="36.5" cy="51.5" r="1.6" fill="#fff"/><circle cx="66.5" cy="51.5" r="1.6" fill="#fff"/>
+<path d="M45 63 H55 L50 69Z" fill="#e0707f"/>
+<path d="M50 69 Q44 77 37 71 M50 69 Q56 77 63 71 M14 62 L28 66 M14 72 L28 70 M86 62 L72 66 M86 72 L72 70" stroke="#2a1218" stroke-width="2" fill="none" stroke-linecap="round"/>
+</symbol>
+</svg>
+
+<div id="intro">
+  <button class="env" id="env" aria-label="Открыть конверт">
+    <div class="back"></div>
+    <div class="letter">Тебе письмо</div>
+    <div class="front"></div>
+    <div class="flap"></div>
+    <div class="seal">🎬</div>
+  </button>
+  <div class="hint">нажми на конверт</div>
+</div>
+
+<main id="stage">
+  <section class="card on" data-step>
+    <svg class="stk a" style="--c:#f2a65a"><use href="#cat"/></svg>
+    <h2>Тебе приглашение</h2>
+    <h1>Приглашаю тебя на свидание</h1>
+    <p>Все уже продумано. Осталось только согласиться.</p>
+    <button class="next">Далее</button>
+    <svg class="stk s b" style="--c:#f7c6d0"><use href="#cat"/></svg>
+  </section>
+
+  <section class="card" data-step>
+    <svg class="stk c" style="--c:#b8bcc8"><use href="#cat"/></svg>
+    <h2>Когда</h2>
+    <div class="big">31 октября</div>
+    <p>Суббота. Будь готов к <b class="t">17:30</b>: в это время мы выезжаем.</p>
+    <button class="next">Далее</button>
+  </section>
+
+  <section class="card" data-step>
+    <svg class="stk d" style="--c:#fff3e0"><use href="#cat"/></svg>
+    <h2>Что надеть</h2>
+    <h1>Одевайся удобно</h1>
+    <p>Никакого официоза. Главное, чтобы тебе было комфортно.</p>
+    <button class="next">Далее</button>
+    <svg class="stk s b" style="--c:#f2a65a"><use href="#cat"/></svg>
+  </section>
+
+  <section class="card ticket" data-step>
+    <svg class="stk a" style="--c:#b8bcc8"><use href="#cat"/></svg>
+    <h2>Билет на свидание</h2>
+    <div class="row"><span>Дата</span><b>31 октября</b></div>
+    <div class="row"><span>Будь готов к</span><b class="t">17:30</b></div>
+    <div class="row"><span>Одежда</span><b>удобная, без официоза</b></div>
+    <div class="row"><span>Куда</span><b>сюрприз</b></div>
+    <div class="bars"></div>
+    <button class="next" id="yesBtn">Я приду!</button>
+    <div id="yes"></div>
+    <svg class="stk b" style="--c:#f2a65a"><use href="#cat"/></svg>
+  </section>
+
+  <div class="dots" id="dots"></div>
+</main>
+
+<script>
+var TIME="17:30";
+document.querySelectorAll('.t').forEach(function(e){e.textContent=TIME});
+var env=document.getElementById('env'),intro=document.getElementById('intro'),stage=document.getElementById('stage');
+var steps=[].slice.call(document.querySelectorAll('[data-step]')),dots=document.getElementById('dots'),cur=0;
+steps.forEach(function(){dots.appendChild(document.createElement('i'))});
+function show(n){cur=n;steps.forEach(function(s,i){s.classList.toggle('on',i===n)});[].forEach.call(dots.children,function(d,i){d.classList.toggle('on',i===n)})}
+show(0);
+env.addEventListener('click',function(){
+  if(env.classList.contains('open'))return;
+  env.classList.add('open');
+  setTimeout(function(){intro.classList.add('gone')},2100);
+  setTimeout(function(){intro.style.display='none';stage.classList.add('on')},2700);
+});
+steps.forEach(function(s,i){var b=s.querySelector('.next');if(b&&i<steps.length-1)b.addEventListener('click',function(){show(i+1)})});
+document.getElementById('yesBtn').addEventListener('click',function(){document.getElementById('yes').textContent='Отлично! До встречи 🎬';this.style.display='none'});
+</script>
+</body>
+</html>
