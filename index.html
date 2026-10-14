@@ -62,7 +62,9 @@ button{font:inherit;cursor:pointer}
 .row b{font-family:var(--font-head);font-size:21px;font-weight:600;color:var(--velvet);text-align:right}
 .bars{height:34px;margin-top:6px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 5px,var(--ink) 5px 6px,transparent 6px 11px,var(--ink) 11px 14px,transparent 14px 16px)}
 .ticket .next{align-self:center}
-#yes{text-align:center;font-weight:800;color:var(--velvet);min-height:24px;margin-top:4px}
+#yes{text-align:center;font-weight:800;color:var(--velvet);margin-top:4px}
+#note{font-size:13px;color:#7d7476;text-align:center;font-weight:400;font-style:italic}
+#note:empty{display:none}
 
 /* cat stickers */
 .stk{position:absolute;width:92px;height:92px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3))}
@@ -138,6 +140,7 @@ button{font:inherit;cursor:pointer}
     <div class="bars"></div>
     <button class="next" id="yesBtn">я приду!</button>
     <div id="yes"></div>
+    <div id="note"></div>
     <svg class="stk b" style="--c:#f2a65a"><use href="#cat"/></svg>
   </section>
 
@@ -159,7 +162,7 @@ env.addEventListener('click',function(){
   setTimeout(function(){intro.style.display='none';stage.classList.add('on')},2700);
 });
 steps.forEach(function(s,i){var b=s.querySelector('.next');if(b&&i<steps.length-1)b.addEventListener('click',function(){show(i+1)})});
-document.getElementById('yesBtn').addEventListener('click',function(){document.getElementById('yes').textContent='отлично! до встречи ❤ ';this.style.display='none'});
+document.getElementById('yesBtn').addEventListener('click',function(){document.getElementById('yes').textContent='отлично! до встречи ❤ ';document.getElementById('note').textContent='заскринь, чтобы не забыть';this.style.display='none'});
 </script>
 </body>
 </html>
