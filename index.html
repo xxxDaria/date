@@ -14,10 +14,10 @@
 :root{--font-head:'Soyuz Grotesk','Oswald','Impact',sans-serif;--font-body:'Google Sans','Onest',system-ui,sans-serif;--bg:#1a0a10;--velvet:#7a1426;--gold:#f0b94e;--cream:#f8ecd4;--ink:#2a1218;--pink:#f4a9b8;color-scheme:dark;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
-html,body{height:100%;margin:0}
+html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}
 body{background:radial-gradient(ellipse at 50% 20%,#5a1223 0%,var(--bg) 65%);color:var(--cream);font-family:var(--font-body);overflow:hidden;display:flex;align-items:center;justify-content:center}
-body:before,body:after{content:"";position:fixed;left:0;right:0;height:22px;background:repeating-linear-gradient(90deg,transparent 0 12px,rgba(248,236,212,.18) 12px 24px);border-block:2px solid rgba(248,236,212,.12)}
-body:before{top:0}body:after{bottom:0}
+/* body:before,body:after{content:"";position:fixed;left:0;right:0;height:22px;background:repeating-linear-gradient(90deg,transparent 0 12px,rgba(248,236,212,.18) 12px 24px);border-block:2px solid rgba(248,236,212,.12)}
+body:before{top:0}body:after{bottom:0} */
 h1,h2,.big{font-family:var(--font-head);font-weight:600;letter-spacing:.02em;margin:0}
 button{font:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
@@ -25,28 +25,28 @@ button{font:inherit;cursor:pointer}
 /* envelope */
 #intro{display:flex;flex-direction:column;align-items:center;gap:36px;transition:opacity .6s,transform .6s}
 #intro.gone{opacity:0;transform:scale(.9);pointer-events:none}
-.env{position:relative;width:min(84vw,340px);aspect-ratio:3/2;perspective:900px;border:0;background:none;padding:0}
+.env{position:relative;width:min(84vw,340px);aspect-ratio:3/2;border:0;background:none;padding:0;isolation:isolate}
 .env>*{position:absolute}
 .back{inset:0;background:#8f1d2f;border-radius:0 0 8px 8px}
-.letter{z-index:1;left:7%;right:7%;top:8%;bottom:8%;background:var(--cream);border-radius:4px;color:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:20px;transition:transform .9s .55s cubic-bezier(.3,.8,.3,1)}
-.front{z-index:2;inset:0;background:#a8283b;clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%);border-radius:8px}
-.flap{left:0;right:0;top:0;height:55%;background:#c03348;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .6s,z-index 0s .3s;z-index:3}
-.seal{left:50%;top:41%;width:44px;height:44px;margin:0 0 0 -22px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;z-index:4;transition:opacity .3s;box-shadow:0 2px 0 #b8842a}
-.env.open .flap{transform:rotateX(180deg);z-index:0}
+.letter{z-index:1;left:7%;right:7%;top:8%;bottom:8%;background:var(--cream);border-radius:4px;color:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:20px;transition:transform .9s .55s cubic-bezier(.3,.8,.3,1);will-change:transform}
+.front{z-index:2;left:0;top:0;width:100%;height:100%;display:block}
+.flap{z-index:3;left:0;top:0;width:100%;height:55%;display:block;transform-origin:top;transform:perspective(900px) rotateX(0deg);transition:transform .6s,z-index 0s .3s;will-change:transform}
+.seal{left:50%;top:41%;width:44px;height:44px;margin:0 0 0 -22px;border-radius:50%;background:var(--gold); color:#b8842a;display:flex;align-items:center;justify-content:center;font-size:22px;z-index:4;transition:opacity .3s;box-shadow:0 2px 0 #b8842a}
+.env.open .flap{transform:perspective(900px) rotateX(180deg);z-index:0}
 .env.open .seal{opacity:0}
-.env.open .letter{transform:translateY(-62%)}
+.env.open .letter{transform:translateY(-44%)}
 .hint{font-family:var(--font-head);font-size:20px;color:var(--gold);letter-spacing:.06em}
 
 /* stage */
 #stage{display:none;width:min(92vw,400px);flex-direction:column;align-items:center;gap:22px}
 #stage.on{display:flex}
-.card{position:relative;width:100%;min-height:360px;background:var(--cream);color:var(--ink);border-radius:14px;padding:28px 26px 28px;text-align:center;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px}
+.card{position:relative;width:100%;min-height:360px;background:var(--cream);color:var(--ink);border-radius:14px;padding:28px 26px 28px;text-align:center;display:none;flex-direction:column;align-items:center;justify-content:center;gap:24px}
 .card.on{display:flex;animation:in .45s ease-out}
 @keyframes in{from{opacity:0;transform:translateX(40px)}}
 .card h1{font-size:40px;line-height:0.9;color:var(--velvet)}
-.card h2{font-size:22px;color:var(--velvet)}
+.card h2{font-size:22px;line-height:0.9;color:var(--velvet)}
 .card:not(.ticket) h2{font-family:var(--font-body);font-size:14px;font-weight:700;letter-spacing:.02em;color:var(--velvet);padding:6px 16px;border-radius:999px;border: 1.5px solid var(--velvet);}
-.card p{margin:0;font-size:18px;line-height:1.2;max-width:30ch}
+.card p{margin:0;font-size:18px;line-height:1.3;max-width:30ch}
 .big{font-size:54px;line-height:1;color:var(--velvet)}
 .next{background:var(--velvet);color:var(--cream);border:0;border-radius:999px;padding:13px 34px;font-weight:800;font-size:18px;margin-top:8px;box-shadow:0 4px 0 #4a0b17;transition:transform .1s}
 .next:active{transform:translateY(3px);box-shadow:0 1px 0 #4a0b17}
@@ -58,7 +58,7 @@ button{font:inherit;cursor:pointer}
 .ticket{text-align:left;align-items:stretch;padding:38px 24px 24px;-webkit-mask:radial-gradient(circle 12px at 0 62%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 12px at 100% 62%,#0000 98%,#000) right/51% 100% no-repeat;mask:radial-gradient(circle 12px at 0 62%,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 12px at 100% 62%,#0000 98%,#000) right/51% 100% no-repeat;box-shadow:none}
 .ticket h2{font-size:30px;text-align:center}
 .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:2px dashed rgba(122,20,38,.35);padding:9px 0}
-.row span{font-size:14px;opacity:.7}
+.row span{font-size:14px;opacity:.7;font-weight: 500;}
 .row b{font-family:var(--font-head);font-size:21px;font-weight:600;color:var(--velvet);text-align:right}
 .bars{height:34px;margin-top:6px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 5px,var(--ink) 5px 6px,transparent 6px 11px,var(--ink) 11px 14px,transparent 14px 16px)}
 .ticket .next{align-self:center}
@@ -79,9 +79,9 @@ button{font:inherit;cursor:pointer}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <symbol id="cat" viewBox="0 0 100 100">
 <g stroke="#fff" stroke-width="11" stroke-linejoin="round" fill="#fff">
-<path d="M14 44 L18 8 L46 24Z M86 44 L82 8 L54 24Z"/><ellipse cx="50" cy="58" rx="38" ry="33"/></g>
-<path d="M14 44 L18 8 L46 24Z M86 44 L82 8 L54 24Z" fill="var(--c)"/>
-<path d="M22 32 L23 17 L36 25Z M78 32 L77 17 L64 25Z" fill="#f4a9b8"/>
+<path d="M18 11 L47 28 L42 46 L14 52Z M82 11 L53 28 L58 46 L86 52Z"/><ellipse cx="50" cy="58" rx="38" ry="33"/></g>
+<path d="M18 11 L47 28 L42 46 L14 52Z M82 11 L53 28 L58 46 L86 52Z" fill="var(--c)"/>
+<path d="M22 33 L23 20 L35 27Z M78 33 L77 20 L65 27Z" fill="#f4a9b8"/>
 <ellipse cx="50" cy="58" rx="38" ry="33" fill="var(--c)"/>
 <circle cx="26" cy="64" r="7" fill="#f4a9b8" opacity=".55"/><circle cx="74" cy="64" r="7" fill="#f4a9b8" opacity=".55"/>
 <ellipse cx="35" cy="54" rx="4.5" ry="6" fill="#2a1218"/><ellipse cx="65" cy="54" rx="4.5" ry="6" fill="#2a1218"/>
@@ -94,10 +94,10 @@ button{font:inherit;cursor:pointer}
 <div id="intro">
   <button class="env" id="env" aria-label="Открыть конверт">
     <div class="back"></div>
-    <div class="letter">Тебе письмо</div>
-    <div class="front"></div>
-    <div class="flap"></div>
-    <div class="seal">♡</div>
+    <div class="letter">тебе письмо</div>
+    <svg class="front" viewBox="0 0 300 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 L150 110 L300 0 V192 Q300 200 292 200 H8 Q0 200 0 192 Z" fill="#a8283b"/></svg>
+    <svg class="flap" viewBox="0 0 300 110" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 H300 L150 110 Z" fill="#c03348" stroke="#c03348" stroke-width="1" stroke-linejoin="round"/></svg>
+    <div class="seal">❤</div>
   </button>
   <div class="hint">нажми на конверт</div>
 </div>
@@ -105,38 +105,38 @@ button{font:inherit;cursor:pointer}
 <main id="stage">
   <section class="card on" data-step>
     <svg class="stk a" style="--c:#f2a65a"><use href="#cat"/></svg>
-    <h1>Приглашаю тебя на свидание</h1>
-    <p>Все уже продумано. Осталось только согласиться</p>
-    <button class="next">Далее</button>
+    <h1>приглашаю тебя на свидание</h1>
+    <p>все уже продумано. осталось только согласиться</p>
+    <button class="next">далее</button>
     <svg class="stk s b" style="--c:#f7c6d0"><use href="#cat"/></svg>
   </section>
 
   <section class="card" data-step>
     <svg class="stk c" style="--c:#b8bcc8"><use href="#cat"/></svg>
-    <h2>Когда</h2>
+    <h2>когда</h2>
     <h1>31 октября</h1>
-    <p>Суббота. Будь готов к <b class="t">17:30</b>, в это время мы выезжаем</p>
+    <p>суббота. будь готов к <b class="t">17:30</b>, в это время мы выезжаем</p>
     <button class="next">Далее</button>
   </section>
 
   <section class="card" data-step>
     <svg class="stk d" style="--c:#fff3e0"><use href="#cat"/></svg>
-    <h2>Что надеть</h2>
-    <h1>Одевайся удобно</h1>
-    <p>Никакого официоза. Главное, чтобы тебе было комфортно</p>
-    <button class="next">Далее</button>
+    <h2>что надеть</h2>
+    <h1>одевайся удобно</h1>
+    <p>никакого официоза. главное, чтобы тебе было комфортно</p>
+    <button class="next">далее</button>
     <svg class="stk s b" style="--c:#f2a65a"><use href="#cat"/></svg>
   </section>
 
   <section class="card ticket" data-step>
     <svg class="stk a" style="--c:#b8bcc8"><use href="#cat"/></svg>
-    <h2>Билет на свидание</h2>
+    <h2>билет на свидание</h2>
     <div class="row"><span>Дата</span><b>31 октября</b></div>
     <div class="row"><span>Будь готов к</span><b class="t">17:30</b></div>
     <div class="row"><span>Одежда</span><b>удобная</b></div>
     <div class="row"><span>Куда</span><b>сюрприз</b></div>
     <div class="bars"></div>
-    <button class="next" id="yesBtn">Я приду!</button>
+    <button class="next" id="yesBtn">я приду!</button>
     <div id="yes"></div>
     <svg class="stk b" style="--c:#f2a65a"><use href="#cat"/></svg>
   </section>
@@ -159,7 +159,7 @@ env.addEventListener('click',function(){
   setTimeout(function(){intro.style.display='none';stage.classList.add('on')},2700);
 });
 steps.forEach(function(s,i){var b=s.querySelector('.next');if(b&&i<steps.length-1)b.addEventListener('click',function(){show(i+1)})});
-document.getElementById('yesBtn').addEventListener('click',function(){document.getElementById('yes').textContent='Отлично! До встречи';this.style.display='none'});
+document.getElementById('yesBtn').addEventListener('click',function(){document.getElementById('yes').textContent='отлично! до встречи';this.style.display='none'});
 </script>
 </body>
 </html>
