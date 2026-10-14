@@ -64,6 +64,7 @@ button{font:inherit;cursor:pointer}
 .ticket .next{align-self:center}
 #yes{text-align:center;font-weight:800;color:var(--velvet);margin-top:4px}
 #note{font-size:13px;color:#7d7476;text-align:center;font-weight:400;font-style:italic}
+#memo{font-size:13px;color:#7d7476;text-align:center;font-weight:400;}
 #note:empty{display:none}
 
 /* cat stickers */
@@ -117,7 +118,8 @@ button{font:inherit;cursor:pointer}
     <svg class="stk c" style="--c:#b8bcc8"><use href="#cat"/></svg>
     <h2>когда</h2>
     <h1>31 октября</h1>
-    <p>суббота. будь готов к <b class="t">17:30</b>, в это время мы выезжаем</p>
+    <p>суббота. встречаемся в <b class="t">17:50</b> у моего дома, чтобы к 18:30 уже быть на месте</p>
+    <div id="memo"><i>точный план поездки решим ближе к дате</i> 😉</div>
     <button class="next">далее</button>
   </section>
 
@@ -134,7 +136,7 @@ button{font:inherit;cursor:pointer}
     <svg class="stk a" style="--c:#b8bcc8"><use href="#cat"/></svg>
     <h2>билет на свидание</h2>
     <div class="row"><span>Дата</span><b>31 октября</b></div>
-    <div class="row"><span>Будь готов к</span><b class="t">17:30</b></div>
+    <div class="row"><span>Время</span><b class="t">17:50</b></div>
     <div class="row"><span>Одежда</span><b>удобная</b></div>
     <div class="row"><span>Куда</span><b>сюрприз</b></div>
     <div class="bars"></div>
@@ -148,7 +150,7 @@ button{font:inherit;cursor:pointer}
 </main>
 
 <script>
-var TIME="17:30";
+var TIME="17:50";
 document.querySelectorAll('.t').forEach(function(e){e.textContent=TIME});
 var env=document.getElementById('env'),intro=document.getElementById('intro'),stage=document.getElementById('stage');
 var steps=[].slice.call(document.querySelectorAll('[data-step]')),dots=document.getElementById('dots'),cur=0;
